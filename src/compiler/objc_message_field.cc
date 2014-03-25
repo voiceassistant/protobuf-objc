@@ -122,8 +122,8 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
     printer->Print(variables_,
       "- (BOOL) has$capitalized_name$;\n"
       "- ($storage_type$) $name$;\n"
-      "- ($classname$Builder*) set$capitalized_name$:($storage_type$) value;\n"
-      "- ($classname$Builder*) set$capitalized_name$Builder:($type$Builder*) builderForValue;\n"
+      "- ($classname$Builder*) add$capitalized_name$:($storage_type$) value;\n"
+      "- ($classname$Builder*) add$capitalized_name$Builder:($type$Builder*) builderForValue;\n"
       "- ($classname$Builder*) merge$capitalized_name$:($storage_type$) value;\n"
       "- ($classname$Builder*) clear$capitalized_name$;\n");
   }
@@ -136,13 +136,13 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
       "- ($storage_type$) $name$ {\n"
       "  return result.$name$;\n"
       "}\n"
-      "- ($classname$Builder*) set$capitalized_name$:($storage_type$) value {\n"
+      "- ($classname$Builder*) add$capitalized_name$:($storage_type$) value {\n"
       "  result.has$capitalized_name$ = YES;\n"
       "  result.$name$ = value;\n"
       "  return self;\n"
       "}\n"
-      "- ($classname$Builder*) set$capitalized_name$Builder:($type$Builder*) builderForValue {\n"
-      "  return [self set$capitalized_name$:[builderForValue build]];\n"
+      "- ($classname$Builder*) add$capitalized_name$Builder:($type$Builder*) builderForValue {\n"
+      "  return [self add$capitalized_name$:[builderForValue build]];\n"
       "}\n"
       "- ($classname$Builder*) merge$capitalized_name$:($storage_type$) value {\n"
       "  if (result.has$capitalized_name$ &&\n"
@@ -203,7 +203,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
     }
 
     printer->Print(variables_,
-      "[self set$capitalized_name$:[subBuilder buildPartial]];\n");
+      "[self add$capitalized_name$:[subBuilder buildPartial]];\n");
   }
 
 
@@ -337,8 +337,8 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
       "- (PBAppendableArray *)$name$;\n"
       "- ($storage_type$)$name$AtIndex:(NSUInteger)index;\n"
       "- ($classname$Builder *)add$capitalized_name$:($storage_type$)value;\n"
-      "- ($classname$Builder *)set$capitalized_name$Array:(NSArray *)array;\n"
-      "- ($classname$Builder *)set$capitalized_name$Values:(const $storage_type$ __strong *)values count:(NSUInteger)count;\n"
+      "- ($classname$Builder *)add$capitalized_name$Array:(NSArray *)array;\n"
+      "- ($classname$Builder *)add$capitalized_name$Values:(const $storage_type$ __strong *)values count:(NSUInteger)count;\n"
       "- ($classname$Builder *)clear$capitalized_name$;\n");
   }
 
@@ -357,11 +357,11 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
       "  [result.$list_name$ addObject:value];\n"
       "  return self;\n"
       "}\n"
-      "- ($classname$Builder *)set$capitalized_name$Array:(NSArray *)array {\n"
+      "- ($classname$Builder *)add$capitalized_name$Array:(NSArray *)array {\n"
       "  result.$list_name$ = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];\n"
       "  return self;\n"
       "}\n"
-      "- ($classname$Builder *)set$capitalized_name$Values:(const $storage_type$ __strong *)values count:(NSUInteger)count {\n"
+      "- ($classname$Builder *)add$capitalized_name$Values:(const $storage_type$ __strong *)values count:(NSUInteger)count {\n"
       "  result.$list_name$ = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];\n"
       "  return self;\n"
       "}\n"
