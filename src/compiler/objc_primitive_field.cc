@@ -222,13 +222,13 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void PrimitiveFieldGenerator::GenerateHasFieldHeader(io::Printer* printer) const {
-    printer->Print(variables_, "BOOL has$capitalized_name$_:1;\n");
+    printer->Print(variables_, "BOOL _has$capitalized_name$:1;\n");
   }
 
 
   void PrimitiveFieldGenerator::GenerateFieldHeader(io::Printer* printer) const {
     if (descriptor_->type() ==  FieldDescriptor::TYPE_BOOL) {
-      printer->Print(variables_, "$storage_type$ $name$_:1;\n");
+      printer->Print(variables_, "$storage_type$ _$name$:1;\n");
     } else {
       printer->Print(variables_, "$storage_type$ $name$;\n");
     }
@@ -266,19 +266,19 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   void PrimitiveFieldGenerator::GenerateSynthesizeSource(io::Printer* printer) const {
     printer->Print(variables_,
       "- (BOOL) has$capitalized_name$ {\n"
-      "  return !!has$capitalized_name$_;\n"
+      "  return !!_has$capitalized_name$;\n"
       "}\n"
       "- (void) setHas$capitalized_name$:(BOOL) value_ {\n"
-      "  has$capitalized_name$_ = !!value_;\n"
+      "  _has$capitalized_name$ = !!value_;\n"
       "}\n");
 
     if (GetObjectiveCType(descriptor_) == OBJECTIVECTYPE_BOOLEAN) {
       printer->Print(variables_,
         "- (BOOL) $name$ {\n"
-        "  return !!$name$_;\n"
+        "  return !!_$name$;\n"
         "}\n"
         "- (void) add$capitalized_name$:(BOOL) value_ {\n"
-        "  $name$_ = !!value_;\n"
+        "  _$name$ = !!value_;\n"
         "}\n");
     } else {
       printer->Print(variables_, "@synthesize $name$;\n");
