@@ -61,7 +61,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void EnumFieldGenerator::GenerateHasFieldHeader(io::Printer* printer) const {
-    printer->Print(variables_, "BOOL has$capitalized_name$_:1;\n");
+    printer->Print(variables_, "BOOL _has$capitalized_name$:1;\n");
   }
 
 
@@ -98,10 +98,10 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   void EnumFieldGenerator::GenerateSynthesizeSource(io::Printer* printer) const {
     printer->Print(variables_,
       "- (BOOL) has$capitalized_name$ {\n"
-      "  return !!has$capitalized_name$_;\n"
+      "  return !!_has$capitalized_name$;\n"
       "}\n"
       "- (void) setHas$capitalized_name$:(BOOL) value_ {\n"
-      "  has$capitalized_name$_ = !!value_;\n"
+      "  _has$capitalized_name$ = !!value_;\n"
       "}\n"
       "@synthesize $name$;\n");
   }
@@ -120,7 +120,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
     printer->Print(variables_,
       "- (BOOL) has$capitalized_name$;\n"
       "- ($type$) $name$;\n"\
-      "- ($classname$Builder*) set$capitalized_name$:($type$) value;\n"
+      "- ($classname$Builder*) add$capitalized_name$:($type$) value;\n"
       "- ($classname$Builder*) clear$capitalized_name$;\n");
   }
 
@@ -133,7 +133,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
       "- ($type$) $name$ {\n"
       "  return result.$name$;\n"
       "}\n"
-      "- ($classname$Builder*) set$capitalized_name$:($type$) value {\n"
+      "- ($classname$Builder*) add$capitalized_name$:($type$) value {\n"
       "  result.has$capitalized_name$ = YES;\n"
       "  result.$name$ = value;\n"
       "  return self;\n"
@@ -153,7 +153,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   void EnumFieldGenerator::GenerateMergingCodeSource(io::Printer* printer) const {
     printer->Print(variables_,
       "if (other.has$capitalized_name$) {\n"
-      "  [self set$capitalized_name$:other.$name$];\n"
+      "  [self add$capitalized_name$:other.$name$];\n"
       "}\n");
   }
 
@@ -173,7 +173,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
     printer->Print(variables_,
       "int32_t value = [input readEnum];\n"
       "if ($type$IsValidValue(value)) {\n"
-      "  [self set$capitalized_name$:value];\n"
+      "  [self add$capitalized_name$:value];\n"
       "} else {\n"
       "  [unknownFields mergeVarintField:$number$ value:value];\n"
       "}\n");
@@ -295,8 +295,8 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
       "- (PBAppendableArray *)$name$;\n"
       "- ($type$)$name$AtIndex:(NSUInteger)index;\n"
       "- ($classname$Builder *)add$capitalized_name$:($type$)value;\n"
-      "- ($classname$Builder *)set$capitalized_name$Array:(NSArray *)array;\n"
-      "- ($classname$Builder *)set$capitalized_name$Values:(const $type$ *)values count:(NSUInteger)count;\n"
+      "- ($classname$Builder *)add$capitalized_name$Array:(NSArray *)array;\n"
+      "- ($classname$Builder *)add$capitalized_name$Values:(const $type$ *)values count:(NSUInteger)count;\n"
       "- ($classname$Builder *)clear$capitalized_name$;\n");
   }
 
@@ -346,11 +346,11 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
       "  [result.$list_name$ addInt32:value];\n"
       "  return self;\n"
       "}\n"
-      "- ($classname$Builder *)set$capitalized_name$Array:(NSArray *)array {\n"
+      "- ($classname$Builder *)add$capitalized_name$Array:(NSArray *)array {\n"
       "  result.$list_name$ = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeInt32];\n"
       "  return self;\n"
       "}\n"
-      "- ($classname$Builder *)set$capitalized_name$Values:(const $type$ *)values count:(NSUInteger)count {\n"
+      "- ($classname$Builder *)add$capitalized_name$Values:(const $type$ *)values count:(NSUInteger)count {\n"
       "  result.$list_name$ = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeInt32];\n"
       "  return self;\n"
       "}\n"

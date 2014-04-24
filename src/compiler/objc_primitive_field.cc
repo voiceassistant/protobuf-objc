@@ -222,13 +222,13 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void PrimitiveFieldGenerator::GenerateHasFieldHeader(io::Printer* printer) const {
-    printer->Print(variables_, "BOOL has$capitalized_name$_:1;\n");
+    printer->Print(variables_, "BOOL _has$capitalized_name$:1;\n");
   }
 
 
   void PrimitiveFieldGenerator::GenerateFieldHeader(io::Printer* printer) const {
     if (descriptor_->type() ==  FieldDescriptor::TYPE_BOOL) {
-      printer->Print(variables_, "$storage_type$ $name$_:1;\n");
+      printer->Print(variables_, "$storage_type$ _$name$:1;\n");
     } else {
       printer->Print(variables_, "$storage_type$ $name$;\n");
     }
@@ -266,19 +266,19 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   void PrimitiveFieldGenerator::GenerateSynthesizeSource(io::Printer* printer) const {
     printer->Print(variables_,
       "- (BOOL) has$capitalized_name$ {\n"
-      "  return !!has$capitalized_name$_;\n"
+      "  return !!_has$capitalized_name$;\n"
       "}\n"
       "- (void) setHas$capitalized_name$:(BOOL) value_ {\n"
-      "  has$capitalized_name$_ = !!value_;\n"
+      "  _has$capitalized_name$ = !!value_;\n"
       "}\n");
 
     if (GetObjectiveCType(descriptor_) == OBJECTIVECTYPE_BOOLEAN) {
       printer->Print(variables_,
         "- (BOOL) $name$ {\n"
-        "  return !!$name$_;\n"
+        "  return !!_$name$;\n"
         "}\n"
-        "- (void) set$capitalized_name$:(BOOL) value_ {\n"
-        "  $name$_ = !!value_;\n"
+        "- (void) add$capitalized_name$:(BOOL) value_ {\n"
+        "  _$name$ = !!value_;\n"
         "}\n");
     } else {
       printer->Print(variables_, "@synthesize $name$;\n");
@@ -312,7 +312,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
     printer->Print(variables_,
       "- (BOOL) has$capitalized_name$;\n"
       "- ($storage_type$) $name$$storage_attribute$;\n"
-      "- ($classname$Builder*) set$capitalized_name$:($storage_type$) value;\n"
+      "- ($classname$Builder*) add$capitalized_name$:($storage_type$) value;\n"
       "- ($classname$Builder*) clear$capitalized_name$;\n");
   }
 
@@ -345,7 +345,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
       "- ($storage_type$) $name$ {\n"
       "  return result.$name$;\n"
       "}\n"
-      "- ($classname$Builder*) set$capitalized_name$:($storage_type$) value {\n"
+      "- ($classname$Builder*) add$capitalized_name$:($storage_type$) value {\n"
       "  result.has$capitalized_name$ = YES;\n"
       "  result.$name$ = value;\n"
       "  return self;\n"
@@ -361,7 +361,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   void PrimitiveFieldGenerator::GenerateMergingCodeSource(io::Printer* printer) const {
     printer->Print(variables_,
       "if (other.has$capitalized_name$) {\n"
-      "  [self set$capitalized_name$:other.$name$];\n"
+      "  [self add$capitalized_name$:other.$name$];\n"
       "}\n");
   }
 
@@ -370,7 +370,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
   void PrimitiveFieldGenerator::GenerateParsingCodeSource(io::Printer* printer) const {
     printer->Print(variables_,
-      "[self set$capitalized_name$:[input read$capitalized_type$]];\n");
+      "[self add$capitalized_name$:[input read$capitalized_type$]];\n");
   }
 
   void PrimitiveFieldGenerator::GenerateSerializationCodeSource(io::Printer* printer) const {
@@ -482,8 +482,8 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
       "- (PBAppendableArray *)$name$;\n"
       "- ($storage_type$)$name$AtIndex:(NSUInteger)index;\n"
       "- ($classname$Builder *)add$capitalized_name$:($storage_type$)value;\n"
-      "- ($classname$Builder *)set$capitalized_name$Array:(NSArray *)array;\n"
-      "- ($classname$Builder *)set$capitalized_name$Values:(const $storage_type$ *)values count:(NSUInteger)count;\n"
+      "- ($classname$Builder *)add$capitalized_name$Array:(NSArray *)array;\n"
+      "- ($classname$Builder *)add$capitalized_name$Values:(const $storage_type$ *)values count:(NSUInteger)count;\n"
       "- ($classname$Builder *)clear$capitalized_name$;\n");
   }
 
@@ -533,11 +533,11 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
       "  [result.$list_name$ add$array_value_type_name_cap$:value];\n"
       "  return self;\n"
       "}\n"
-      "- ($classname$Builder *)set$capitalized_name$Array:(NSArray *)array {\n"
+      "- ($classname$Builder *)add$capitalized_name$Array:(NSArray *)array {\n"
       "  result.$list_name$ = [PBAppendableArray arrayWithArray:array valueType:$array_value_type$];\n"
       "  return self;\n"
       "}\n"
-      "- ($classname$Builder *)set$capitalized_name$Values:(const $storage_type$ *)values count:(NSUInteger)count {\n"
+      "- ($classname$Builder *)add$capitalized_name$Values:(const $storage_type$ *)values count:(NSUInteger)count {\n"
       "  result.$list_name$ = [PBAppendableArray arrayWithValues:values count:count valueType:$array_value_type$];\n"
       "  return self;\n"
       "}\n"
